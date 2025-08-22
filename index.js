@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HACKED BY SHADOWSEAL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables for foggy cyberpunk theme */
+        :root {
+            --bg-color: #000000;
+            --bg-secondary: #050505;
+            --text-primary: #e0e0e0;
+            --text-secondary: #666666;
+            --neon-purple: #ff00ff;
+            --neon-blue: #00ffff;
+            --neon-red: #ff0040;
+            --main-circle-size: 180px;
+            --sub-circle-size: 120px;
+        }
+
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Foggy cyberpunk animated background */
+        .fog-layer-1 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(40, 20, 60, 0.4) 0%, transparent 70%),
+                radial-gradient(ellipse at 80% 70%, rgba(20, 40, 60, 0.3) 0%, transparent 70%);
+            animation: fogDrift1 20s ease-in-out infinite;
+            z-index: -5;
+        }
+
+        .fog-layer-2 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 70% 20%, rgba(60, 20, 40, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 30% 80%, rgba(40, 60, 20, 0.2) 0%, transparent 50%);
+            animation: fogDrift2 25s ease-in-out infinite reverse;
+            z-index: -4;
+        }
+
+        .mist-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(3px 3px at 15% 25%, rgba(255, 0, 255, 0.2) 0%, transparent 100%),
+                radial-gradient(2px 2px at 85% 75%, rgba(0, 255, 255, 0.1) 0%, transparent 100%);
+            animation: mistFlow 15s ease-in-out infinite;
+            z-index: -3;
+        }
+
+        /* Audio controls */
+        .audio-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .audio-btn {
+            background: rgba(255, 0, 255, 0.2);
+            border: 1px solid rgba(255, 0, 255, 0.5);
+            color: var(--text-primary);
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .audio-btn:hover {
+            background: rgba(255, 0, 255, 0.4);
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+        }
+
+        /* Main layout */
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+        }
+
+        /* Diamond layout container */
+        .diamond-container {
+            position: relative;
+            width: 600px;
+            height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        /* Circle card styles with Telegram links */
+        .circle-card {
+            position: absolute;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .circle-card:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
+        }
+
+        .circle-card:active {
+            transform: scale(0.95) rotate(-2deg);
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.7);
+        }
+
+        .circle-ring {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(20, 20, 20, 0.8);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 1px solid rgba(255, 0, 255, 0.3);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .circle-ring:hover {
+            border-color: rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 40px rgba(0, 255, 255, 0.4);
+        }
+
+        .circle-image {
+            position: absolute;
+            width: calc(100% - 4px);
+            height: calc(100% - 4px);
+            border-radius: 50%;
+            object-fit: cover;
+            z-index: 2;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .circle-image:hover {
+            filter: brightness(1.2) contrast(1.1);
+            transform: scale(1.05);
+        }
+
+        /* Positioning for diamond layout */
+        .top {
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: var(--sub-circle-size);
+            height: var(--sub-circle-size);
+            transition: all 0.5s ease;
+        }
+
+        .left {
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            width: var(--sub-circle-size);
+            height: var(--sub-circle-size);
+            transition: all 0.5s ease;
+        }
+
+        .right {
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            width: var(--sub-circle-size);
+            height: var(--sub-circle-size);
+            transition: all 0.5s ease;
+        }
+
+        .center {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: var(--main-circle-size);
+            height: var(--main-circle-size);
+            transition: all 0.5s ease;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            :root {
+                --main-circle-size: 140px;
+                --sub-circle-size: 100px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .diamond-container {
+                width: 400px;
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            :root {
+                --main-circle-size: 120px;
+                --sub-circle-size: 80px;
+            }
+
+            main {
+                padding: 1rem;
+            }
+
+            .diamond-container {
+                position: static;
+                width: 100%;
+                height: auto;
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .circle-card {
+                position: static;
+                transform: none;
+                margin: 0 auto;
+            }
+
+            .top,
+            .left,
+            .right,
+            .center {
+                position: static;
+                transform: none;
+                width: var(--main-circle-size);
+                height: var(--main-circle-size);
+            }
+
+            .center {
+                width: calc(var(--main-circle-size) * 1.2);
+                height: calc(var(--main-circle-size) * 1.2);
+            }
+        }
+
+        /* Prevent overflow */
+        .diamond-container * {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        /* Reckoning text styles */
+        .reckoning-section {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(20, 20, 20, 0.6);
+            border: 1px solid rgba(255, 0, 255, 0.3);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .reckoning-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-primary);
+            text-align: justify;
+            letter-spacing: 0.5px;
+        }
+
+        .reckoning-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .reckoning-text strong {
+            color: var(--neon-red);
+            text-shadow: 0 0 5px rgba(255, 0, 64, 0.5);
+        }
+
+        .reckoning-title {
+            font-size: 2rem;
+            color: var(--neon-red);
+            text-align: center;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(255, 0, 64, 0.7);
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="fog-layer-1"></div>
+    <div class="fog-layer-2"></div>
+    <div class="mist-particles"></div>
+    
+    <main>
+        <header>
+            <h1>HACKED BY 〲ɱ๏ɳᴀʀᴄʜ ⌾ғ sʜᴀᴅᵒʷˢ〴</h1>
+            <p class="subtitle">Phantom Legion Was Here</p>
+        </header>
+
+        <div class="diamond-container">
+            <!-- Top -->
+            <a href="https://t.me/+UI9MC72WViBkMmRl" class="circle-card top">
+                <div class="circle-ring">
+                    <img src="https://envs.sh/Fse.jpg" alt="𝐓𝐄𝐀𝐌 𝟏𝟔𝟔𝟐" class="circle-image">
+                </div>
+            </a>
+
+            <!-- Left -->
+            <a href="https://t.me/s1lent_pulse" class="circle-card left">
+                <div class="circle-ring">
+                    <img src="https://envs.sh/Fsh.jpg" alt="$𝖎𝖑𝖊𝖓𝖙 | ℙ𝖚𝖑𝖘𝖊" class="circle-image">
+                </div>
+            </a>
+
+            <!-- Right -->
+            <a href="https://t.me/K14M69" class="circle-card right">
+                <div class="circle-ring">
+                    <img src="https://i.postimg.cc/Znm7kxHf/IMG-20250822-173504_738.jpg" alt="K14M_69_NEWS" class="circle-image">
+                </div>
+            </a>
+
+            <!-- Center (Main) -->
+            <a href="https://t.me/AF_T3M" class="circle-card center">
+                <div class="circle-ring">
+                    <img src="https://envs.sh/Fsq.jpg" alt="𝐀𝐅 𝐓𝐄𝐀𝐌" class="circle-image">
+                </div>
+            </a>
+        </div>
+
+        <section class="reckoning-section">
+            <h2 class="reckoning-title">PUBLIC RECKONING</h2>
+            <div class="reckoning-text">
+                <p>You all see me as quiet. Weak. Someone you can overlook.</p>
+                
+                <p>But today, you're going to learn the difference between silence and stillness.
+                Between patience and permission.</p>
+                
+                <p>This thread isn't just a post — it's a public reckoning.</p>
+                
+                <p>Let's talk about <strong>Mrs. Bornaly Paul</strong>.
+                Let's talk about the attitude. The disrespect. The sheer audacity she thinks she can wield without consequence.
+                She thought my calm was cowardice. She mistook my dignity for defeat.</p>
+                
+                <p>But she forgot one thing:
+                <strong>I document everything.</strong></p>
+                
+                <p>So here it is — tweet by tweet, screenshot by screenshot, truth by truth.
+                This isn't emotion. This is evidence.
+                This isn't anger. This is accountability.</p>
+                
+                <p>She was warned. She was given chances. She was spoken to — politely, privately, repeatedly.
+                But she chose to cross the line.
+                She chose to play with a fire she didn't realize was already burning.</p>
+                
+                <p>By the time this thread ends, everyone will know exactly what <strong>Mrs. Bornaly Paul</strong> thought she could hide.
+                Everyone will see what happens when you mistake kindness for weakness.</p>
+            </div>
+        </section>
+
+        <footer>
+            <p>© 2025 Phantom Legion | All Rights Reserved</p>
+        </footer>
+    </main>
+
+    <!-- Background music with auto-play fallback -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://audio.jukehost.co.uk/19QvK726LUPlWavP2eQ2ZWBwrhYf171V" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        // Smart audio system with auto-play fallback
+        const bgMusic = document.getElementById('bgMusic');
+        let audioStarted = false;
+
+        // Attempt auto-play
+        function tryAutoPlay() {
+            if (audioStarted) return;
+            
+            bgMusic.play().then(() => {
+                audioStarted = true;
+                console.log('Audio auto-played successfully');
+            }).catch(() => {
+                console.log('Auto-play failed, waiting for user interaction');
+                // Set up user interaction fallback
+                document.addEventListener('click', startAudioOnInteraction, { once: true });
+                document.addEventListener('touchstart', startAudioOnInteraction, { once: true });
+                document.addEventListener('keydown', startAudioOnInteraction, { once: true });
+            });
+        }
+
+        // Start audio on user interaction
+        function startAudioOnInteraction() {
+            if (!audioStarted) {
+                bgMusic.play().then(() => {
+                    audioStarted = true;
+                    console.log('Audio started on user interaction');
+                }).catch(e => console.log('Audio play failed:', e));
+            }
+        }
+
+        // Try auto-play on load
+        window.addEventListener('load', () => {
+            setTimeout(tryAutoPlay, 1000);
+        });
+
+        // Handle any interaction to start audio
+        document.addEventListener('click', startAudioOnInteraction);
+        document.addEventListener('touchstart', startAudioOnInteraction);
+        document.addEventListener('keydown', startAudioOnInteraction);
+    </script>
+</body>
+</html>
